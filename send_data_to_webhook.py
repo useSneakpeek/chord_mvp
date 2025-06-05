@@ -40,10 +40,13 @@ def create_sha256_signature(payload, secret):
     return signature
 
 
-with open('./input.json') as f:
-    payload = json.load(f)
+# with open('./input.json') as f:
+#     payload = json.load(f)
 
-
+test_payload = {"a":"1","b":"2"}
+print("Original payload", test_payload)
+print("Exact message being converted to HMAC signature", json.dumps(test_payload, separators=(',', ':')).encode('utf-8'))
 webhook_url = os.getenv("WEBHOOK_URL")
 secret = os.getenv("WEBHOOK_SECRET")
-send_to_webhook(payload, webhook_url, secret)
+# send_to_webhook(payload, webhook_url, secret)
+send_to_webhook(test_payload, webhook_url, secret)
