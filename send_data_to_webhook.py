@@ -35,18 +35,17 @@ def send_to_webhook(evt_obj, webhook_url, secret, retry_count=3):
 
 
 def create_sha256_signature(payload, secret):
-    hash_object = hmac.new(secret.encode('utf-8'), msg=json.dumps(payload, separators=(',', ':')).encode('utf-8'), digestmod=hashlib.sha256)
+    hash_object = hmac.new(secret.encode('utf-8'), msg=json.dumps(payload).encode('utf-8'), digestmod=hashlib.sha256)
     signature = hash_object.hexdigest()
     return signature
 
 
-# with open('./input.json') as f:
-#     payload = json.load(f)
+with open('./input.json') as f:
+    payload = json.load(f)
 
-test_payload = {"a":"1","b":"2"}
-print("Original payload", test_payload)
-print("Exact message being converted to HMAC signature", json.dumps(test_payload, separators=(',', ':')).encode('utf-8'))
+print("Original payload", payload)
+print("Exact message being converted to HMAC signature with replacement", json.dumps(payload, separators=(',', ':')).encode('utf-8'))
+print("Exact message being converted to HMAC signature without replacement", json.dumps(payload).encode('utf-8'))
 webhook_url = os.getenv("WEBHOOK_URL")
 secret = os.getenv("WEBHOOK_SECRET")
-# send_to_webhook(payload, webhook_url, secret)
-send_to_webhook(test_payload, webhook_url, secret)
+send_to_webhook(payload, webhook_url, secret)
